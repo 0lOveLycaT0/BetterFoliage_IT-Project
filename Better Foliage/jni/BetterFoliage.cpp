@@ -13,7 +13,6 @@
 
 #include "betterfoliage/blocks/betterGrass/BetterGrass.h"
 
-BlockSource *bs;
 
 static bool (*_TessellateInWorld)(BlockTessellator*,Block const &,BlockPos const&,unsigned char,bool);
 static bool TessellateInWorld(BlockTessellator *tess,Block const &block,BlockPos const &pos,unsigned char aux,bool b)
@@ -24,9 +23,9 @@ static bool TessellateInWorld(BlockTessellator *tess,Block const &block,BlockPos
 	Block::mBlocks[2] -> renderLayer1 = TR;*/
 	
 	switch(block.blockId){
-		case 2:
-			return tess -> grassblockRenderer(bs,blockk,pos,aux);
-		break;
+		/*case 2:
+			return tess -> grassblockRenderer(blockk,pos,aux);
+		break;*/
 			
 		default:
 		    return _TessellateInWorld(tess,block,pos,aux,b);

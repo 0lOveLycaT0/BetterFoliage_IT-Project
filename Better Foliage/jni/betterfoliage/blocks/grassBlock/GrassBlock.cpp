@@ -5,7 +5,7 @@
 #include "mcpe/util/AABB.h"
 #include "mcpe/level/BlockSource.h"
 
-bool BlockTessellator::grassblockRenderer(BlockSource&bs, Block*bltile, BlockPos const&blpos, unsigned char c){
+bool BlockTessellator::grassblockRenderer(/*BlockSource&bs, */Block*bltile, BlockPos const&blpos, unsigned char c){
 	int x = blpos.x, y = blpos.y, z = blpos.z;
 	float offsetx = ((x - z + y) % 10) / 45 , offsetz = ((x - z - y) % 10) / 45;
 	//tessellateBlockInWorld(*Block::mBlocks[2],BlockPos(x,y,z),1);
