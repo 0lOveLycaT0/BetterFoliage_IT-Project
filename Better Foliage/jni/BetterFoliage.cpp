@@ -13,24 +13,36 @@
 
 #include "betterfoliage/blocks/betterGrass/BetterGrass.h"
 
+Entity* e;
+BlockSource* bs;
 
-static bool (*_TessellateInWorld)(BlockTessellator*,Block const &,BlockPos const&,unsigned char,bool);
-static bool TessellateInWorld(BlockTessellator *tess,Block const &block,BlockPos const &pos,unsigned char aux,bool b)
+static bool (*_TessellateInWorld)(BlockTessellator*,Block &,BlockPos const&,unsigned char,bool);
+static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const &pos,unsigned char aux,bool b)
 {
 	Block* blockk = const_cast<Block*>(&block);
+	int x = pos.x, y = pos.y, z = pos.z;
 	
 	/*int TR = Block::mGlass -> renderLayer1;
 	Block::mBlocks[2] -> renderLayer1 = TR;*/
 	
-	switch(block.blockId){
-		/*case 2:
-			return tess -> grassblockRenderer(blockk,pos,aux);
-		break;*/
+	/*switch(block.blockId){
+		case 2:
+			return tess -> grassblockRenderer(blockk,pos,aux,bs);
+		break;
 			
 		default:
 		    return _TessellateInWorld(tess,block,pos,aux,b);
 		break;
+	}*/
+	
+	if(block.blockId == 2){
+		bs -> setBlockAndData(pos.x,pos.y+1,pos.z,201,0,3);
 	}
+	else if(block.blockId == 201){
+		float offsetx = ((x - z + y) % 10) / 45 , offsetz = ((x - z - y) % 10) / 45;
+		block.setVisualShape({0,-0.2,0,1+offsetx,0.8,1+offsetz});
+	}
+	return _TessellateInWorld(tess,block,pos,aux,b);
 }
 
 static void (*_InitClientData)();
@@ -77,11 +89,13 @@ static void InitCreativeItems(){
 	Item::addCreativeItem(201,8);
 }
 
-/*virtual void (*_RideTick)(Entity*entity);
-virtual void RideTick(Entity*entity){
-	_RideTick(entity);
-	entity -> Entity::getRegion();
-}*/
+static void (*_NormalTick)(Entity*entity);
+static void NormalTick(Entity*entity){
+	_NormalTick(entity);
+	
+    ::e = entity;
+	*bs = entity -> getRegion();
+}
 
 JNIEXPORT jint JNI_OnLoad(JavaVM*,void*){
 	MSHookFunction((void *)&BlockTessellator::tessellateInWorld,(void *)TessellateInWorld,(void **)&_TessellateInWorld);
@@ -89,7 +103,7 @@ JNIEXPORT jint JNI_OnLoad(JavaVM*,void*){
 	MSHookFunction((void *)&Item::initCreativeItems,(void *)InitCreativeItems,(void **)&_InitCreativeItems);
 	MSHookFunction((void *)&BlockGraphics::initBlocks,(void *)BG_InitBlocks,(void **)&_BG_InitBlocks);
 	MSHookFunction((void *)&Block::initBlocks,(void *)Bl_InitBlocks,(void **)&_Bl_InitBlocks);
-	//MSHookFunction((void *)&Entity::rideTick,(void *)RideTick,(void **)&_RideTick);
+	MSHookFunction((void *)&Entity::normalTick,(void *)NormalTick,(void **)&_NormalTick);
 	return JNI_VERSION_1_6;
 }
 
