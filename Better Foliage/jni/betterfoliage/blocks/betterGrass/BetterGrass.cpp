@@ -7,7 +7,6 @@ BetterGrass::BetterGrass(std::string const &name,int id) : Block(name,id,Materia
 	setCategory(CreativeItemCategory::DECORATIONS);
 	setTicking(true);
 	setSolid(false);
-	//setVisualShape
 	renderLayer = mTallgrass -> renderLayer;
 }
 
@@ -16,7 +15,7 @@ const AABB& BetterGrass::getCollisionShape(AABB&box, BlockSource&s, BlockPos con
 	return mTallgrass -> getCollisionShape(box,s,pos,e);
 }
 
-bool BetterGrass::mayPlaceOn(Block const&b)const
+/*bool BetterGrass::mayPlaceOn(Block const&b)const
 {
 	return mTallgrass -> mayPlaceOn(b);
 }
@@ -24,7 +23,7 @@ bool BetterGrass::mayPlaceOn(Block const&b)const
 bool BetterGrass::canSurvive(BlockSource&s, BlockPos const&pos)const
 {
 	return mTallgrass -> canSurvive(s,pos);
-}
+}*/
 
 void BetterGrass::onGraphicsModeChanged(bool, bool, bool)
 {

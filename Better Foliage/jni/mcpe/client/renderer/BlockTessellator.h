@@ -59,6 +59,6 @@ public:
 	void blend(int, int, int, int);
 	
 	//custom
-    bool grassblockRenderer(Block*, BlockPos const&, unsigned char, BlockSource*);
+    //bool grassblockRenderer(Block*, BlockPos const&, unsigned char, BlockSource*);
 	void tessellateCrossInWorld(Block const&, BlockPos const&, unsigned char, bool);
 };
