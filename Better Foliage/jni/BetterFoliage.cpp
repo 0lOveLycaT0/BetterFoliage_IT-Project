@@ -36,14 +36,14 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 	}*/
 	
 	if(block.blockId == 2){
-		if(bs -> getBlock(pos.x,pos.y+1,pos.z) == Block::mAir){
+		if(bs -> getBlock(x,y+1,z) == Block::mAir){
 			bs -> setBlockAndData(x,y+1,z,201,0,3);
 		}
 		return _TessellateInWorld(tess,block,pos,aux,b);
 	}
 	/*else if(block.blockId == 201){
 		float offsetx = ((x - z + y) % 10) / 45 , offsetz = ((x - z - y) % 10) / 45;
-		Block::mBlocks[201] -> setVisualShape({0,-0.2,0,1+offsetx,0.8,1+offsetz});
+		block.setVisualShape({0,-0.2,0,1+offsetx,0.8,1+offsetz});
 	}*/
 	return _TessellateInWorld(tess,block,pos,aux,b);
 }
@@ -97,7 +97,7 @@ static void NormalTick(Entity*entity){
 	_NormalTick(entity);
 	
     ::e = entity;
-	*bs = entity -> getRegion();
+	*bs = e -> getRegion();
 }
 
 JNIEXPORT jint JNI_OnLoad(JavaVM*,void*){
