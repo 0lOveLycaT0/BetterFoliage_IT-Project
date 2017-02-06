@@ -54,25 +54,25 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 		t.init();
 		t.color(tess -> _getBlockColor(pos,block,aux));
 		TextureUVCoordinateSet const& uv = tess -> _getTexture(block,0,aux);
-		t.vertexUV(pos.x + 0.10,pos.y - 0.20,pos.z + 0.10,uv.maxU,uv.maxV);
-		t.vertexUV(pos.x + 0.10,pos.y + 0.80,pos.z + 0.10,uv.maxU,uv.minV);
-		t.vertexUV(pos.x + 0.90,pos.y + 0.80,pos.z + 0.90,uv.minU,uv.minV);
-		t.vertexUV(pos.x + 0.90,pos.y - 0.20,pos.z + 0.90,uv.minU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.10,y - 0.20,z + offsetz + 0.10,uv.maxU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.10,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.90,uv.minU,uv.minV);
+		t.vertexUV(x + offsetx + 0.90,y - 0.20,z + offsetz + 0.90,uv.minU,uv.maxV);
 		
-		t.vertexUV(pos.x + 0.10,pos.y - 0.20,pos.z + 0.10,uv.minU,uv.maxV);
-		t.vertexUV(pos.x + 0.90,pos.y - 0.20,pos.z + 0.90,uv.maxU,uv.maxV);
-		t.vertexUV(pos.x + 0.90,pos.y + 0.80,pos.z + 0.90,uv.maxU,uv.minV);
-		t.vertexUV(pos.x + 0.10,pos.y + 0.80,pos.z + 0.10,uv.minU,uv.minV);
+		t.vertexUV(x + offsetx + 0.10,y - 0.20,z + offsetz + 0.10,uv.minU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.90,y - 0.20,z + offsetz + 0.90,uv.maxU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.90,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.10,uv.minU,uv.minV);
 		
-		t.vertexUV(pos.x + 0.10,pos.y - 0.20,pos.z + 0.90,uv.maxU,uv.maxV);
-		t.vertexUV(pos.x + 0.10,pos.y + 0.80,pos.z + 0.90,uv.maxU,uv.minV);
-		t.vertexUV(pos.x + 0.90,pos.y + 0.80,pos.z + 0.10,uv.minU,uv.minV);
-		t.vertexUV(pos.x + 0.90,pos.y - 0.20,pos.z + 0.10,uv.minU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.10,y - 0.20,z + offsetz + 0.90,uv.maxU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.90,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.10,uv.minU,uv.minV);
+		t.vertexUV(x + offsetx + 0.90,y - 0.20,z + offsetz + 0.10,uv.minU,uv.maxV);
 		
-		t.vertexUV(pos.x + 0.10,pos.y - 0.20,pos.z + 0.90,uv.minU,uv.maxV);
-		t.vertexUV(pos.x + 0.90,pos.y - 0.20,pos.z + 0.10,uv.maxU,uv.maxV);
-		t.vertexUV(pos.x + 0.90,pos.y + 0.80,pos.z + 0.10,uv.maxU,uv.minV);
-		t.vertexUV(pos.x + 0.10,pos.y + 0.80,pos.z + 0.90,uv.minU,uv.minV);
+		t.vertexUV(x + offsetx + 0.10,y - 0.20,z + offsetz + 0.90,uv.minU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.90,y - 0.20,z + offsetz + 0.10,uv.maxU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.10,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.90,uv.minU,uv.minV);
 	}
 	else{
 		return _TessellateInWorld(tess,block,pos,aux,b);
