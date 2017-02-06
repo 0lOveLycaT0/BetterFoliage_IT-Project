@@ -44,5 +44,3 @@ int BetterGrass::getExtraRenderLayers() const
 {
 	return mTallgrass -> getExtraRenderLayers();
 }
-
-

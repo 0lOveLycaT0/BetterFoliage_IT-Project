@@ -10,11 +10,14 @@
 #include "mcpe/item/AuxDataBlockItem.h"
 #include "mcpe/level/BlockSource.h"
 #include "mcpe/entity/Entity.h"
+#include "mcpe/client/renderer/Tessellator.h"
+#include "mcpe/util/FullBlock.h"
+#include "mcpe/level/Level.h"
 
 #include "betterfoliage/blocks/betterGrass/BetterGrass.h"
 
-Entity* e;
-BlockSource* bs;
+//Entity* e;
+//BlockSource* bs;
 
 static bool (*_TessellateInWorld)(BlockTessellator*,Block &,BlockPos const&,unsigned char,bool);
 static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const &pos,unsigned char aux,bool b)
@@ -36,16 +39,44 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 	}*/
 	
 	if(block.blockId == 2){
-		if(bs -> getBlock(x,y+1,z) == Block::mAir){
-			bs -> setBlockAndData(x,y+1,z,201,0,3);
-		}
+		/*if(tess -> getRegion().getBlock(x,y+1,z) == Block::mAir){
+			tess -> getRegion().setBlock(x,y+1,z,201,0);
+		}*/
+		//tess -> tessellateCrossInWorld(*Block::mBlocks[201],BlockPos(x,y + 1,z),aux,true);
 		return _TessellateInWorld(tess,block,pos,aux,b);
 	}
-	/*else if(block.blockId == 201){
+	else if(block.blockId == 201){
 		float offsetx = ((x - z + y) % 10) / 45 , offsetz = ((x - z - y) % 10) / 45;
-		block.setVisualShape({0,-0.2,0,1+offsetx,0.8,1+offsetz});
-	}*/
-	return _TessellateInWorld(tess,block,pos,aux,b);
+		//block.setVisualShape({0,0,0,1+offsetx,0.8,1+offsetz});
+		//return _TessellateInWorld(tess,block,{x + offsetx,y,z + offsetz},aux,b);
+		//return _tessellateInWorld(tess,block,pos,aux,b);
+		Tessellator& t=tess -> getTessellator();
+		t.init();
+		t.color(tess -> _getBlockColor(pos,block,aux));
+		TextureUVCoordinateSet const& uv = tess -> _getTexture(block,0,aux);
+		t.vertexUV(pos.x + 0.10,pos.y - 0.20,pos.z + 0.10,uv.maxU,uv.maxV);
+		t.vertexUV(pos.x + 0.10,pos.y + 0.80,pos.z + 0.10,uv.maxU,uv.minV);
+		t.vertexUV(pos.x + 0.90,pos.y + 0.80,pos.z + 0.90,uv.minU,uv.minV);
+		t.vertexUV(pos.x + 0.90,pos.y - 0.20,pos.z + 0.90,uv.minU,uv.maxV);
+		
+		t.vertexUV(pos.x + 0.10,pos.y - 0.20,pos.z + 0.10,uv.minU,uv.maxV);
+		t.vertexUV(pos.x + 0.90,pos.y - 0.20,pos.z + 0.90,uv.maxU,uv.maxV);
+		t.vertexUV(pos.x + 0.90,pos.y + 0.80,pos.z + 0.90,uv.maxU,uv.minV);
+		t.vertexUV(pos.x + 0.10,pos.y + 0.80,pos.z + 0.10,uv.minU,uv.minV);
+		
+		t.vertexUV(pos.x + 0.10,pos.y - 0.20,pos.z + 0.90,uv.maxU,uv.maxV);
+		t.vertexUV(pos.x + 0.10,pos.y + 0.80,pos.z + 0.90,uv.maxU,uv.minV);
+		t.vertexUV(pos.x + 0.90,pos.y + 0.80,pos.z + 0.10,uv.minU,uv.minV);
+		t.vertexUV(pos.x + 0.90,pos.y - 0.20,pos.z + 0.10,uv.minU,uv.maxV);
+		
+		t.vertexUV(pos.x + 0.10,pos.y - 0.20,pos.z + 0.90,uv.minU,uv.maxV);
+		t.vertexUV(pos.x + 0.90,pos.y - 0.20,pos.z + 0.10,uv.maxU,uv.maxV);
+		t.vertexUV(pos.x + 0.90,pos.y + 0.80,pos.z + 0.10,uv.maxU,uv.minV);
+		t.vertexUV(pos.x + 0.10,pos.y + 0.80,pos.z + 0.90,uv.minU,uv.minV);
+	}
+	else{
+		return _TessellateInWorld(tess,block,pos,aux,b);
+	}
 }
 
 static void (*_InitClientData)();
@@ -92,13 +123,13 @@ static void InitCreativeItems(){
 	Item::addCreativeItem(201,8);
 }
 
-static void (*_NormalTick)(Entity*entity);
+/*static void (*_NormalTick)(Entity*entity);
 static void NormalTick(Entity*entity){
 	_NormalTick(entity);
 	
     ::e = entity;
 	*bs = e -> getRegion();
-}
+}*/
 
 JNIEXPORT jint JNI_OnLoad(JavaVM*,void*){
 	MSHookFunction((void *)&BlockTessellator::tessellateInWorld,(void *)TessellateInWorld,(void **)&_TessellateInWorld);
@@ -106,7 +137,7 @@ JNIEXPORT jint JNI_OnLoad(JavaVM*,void*){
 	MSHookFunction((void *)&Item::initCreativeItems,(void *)InitCreativeItems,(void **)&_InitCreativeItems);
 	MSHookFunction((void *)&BlockGraphics::initBlocks,(void *)BG_InitBlocks,(void **)&_BG_InitBlocks);
 	MSHookFunction((void *)&Block::initBlocks,(void *)Bl_InitBlocks,(void **)&_Bl_InitBlocks);
-	MSHookFunction((void *)&Entity::normalTick,(void *)NormalTick,(void **)&_NormalTick);
+	//MSHookFunction((void *)&Entity::normalTick,(void *)NormalTick,(void **)&_NormalTick);
 	return JNI_VERSION_1_6;
 }
 

@@ -58,7 +58,12 @@ public:
 	void tex1(unsigned int);
 	void blend(int, int, int, int);
 	
+	void tessellateCrossInWorld(Block const&, BlockPos const&, unsigned char, bool);
+	Color _getBlockColor(BlockPos const&, Block const&);
+	Color _getBlockColor(BlockPos const&, Block const&, unsigned char);
+	TextureUVCoordinateSet const& _getTexture(Block const&, signed char, int) const;
+	Tessellator& getTessellator();
+	
 	//custom
     //bool grassblockRenderer(Block*, BlockPos const&, unsigned char, BlockSource*);
-	void tessellateCrossInWorld(Block const&, BlockPos const&, unsigned char, bool);
 };
