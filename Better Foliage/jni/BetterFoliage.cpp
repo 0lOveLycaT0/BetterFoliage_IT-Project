@@ -1,6 +1,7 @@
 #include <jni.h>
 #include <dlfcn.h>
 #include <Substrate.h>
+#include <cstdlib>
 
 #include "mcpe/client/renderer/BlockTessellator.h"
 #include "mcpe/block/Block.h"
@@ -25,8 +26,8 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 	Block* blockk = const_cast<Block*>(&block);
 	int x = pos.x, y = pos.y, z = pos.z;
 	
-	/*int TR = Block::mGlass -> renderLayer1;
-	Block::mBlocks[2] -> renderLayer1 = TR;*/
+	int TR = Block::mGlass -> renderLayer1;
+	Block::mBlocks[2] -> renderLayer1 = TR;
 	
 	/*switch(block.blockId){
 		case 2:
@@ -42,37 +43,42 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 		/*if(tess -> getRegion().getBlock(x,y+1,z) == Block::mAir){
 			tess -> getRegion().setBlock(x,y+1,z,201,0);
 		}*/
-		//tess -> tessellateCrossInWorld(*Block::mBlocks[201],BlockPos(x,y + 1,z),aux,true);
+		srand(x^y^z);
+		unsigned char raux = rand()%3;
+	    tess -> tessellateCrossInWorld(*Block::mBlocks[201],BlockPos(x,y + 1,z),raux,true);
 		return _TessellateInWorld(tess,block,pos,aux,b);
 	}
 	else if(block.blockId == 201){
-		float offsetx = ((x - z + y) % 10) / 45 , offsetz = ((x - z - y) % 10) / 45;
+        srand(x^y^z);
+		float const  offsetx = fmod((((float)rand())/((float)RAND_MAX)),0.2)*((rand()%2)?1:-1);
+		float const  offsety = fmod((((float)rand())/((float)RAND_MAX)),0.1)*((rand()%2)?1:-1);
+		float const  offsetz = fmod((((float)rand())/((float)RAND_MAX)),0.2)*((rand()%2)?1:-1);
 		//block.setVisualShape({0,0,0,1+offsetx,0.8,1+offsetz});
 		//return _TessellateInWorld(tess,block,{x + offsetx,y,z + offsetz},aux,b);
 		//return _tessellateInWorld(tess,block,pos,aux,b);
-		Tessellator& t=tess -> getTessellator();
+		Tessellator& t = tess -> getTessellator();
 		t.init();
 		t.color(tess -> _getBlockColor(pos,block,aux));
 		TextureUVCoordinateSet const& uv = tess -> _getTexture(block,0,aux);
 		t.vertexUV(x + offsetx + 0.10,y - 0.20,z + offsetz + 0.10,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.10,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.90,uv.minU,uv.minV);
+		t.vertexUV(x + offsetx + 0.10,y + offsety + 0.70,z + offsetz + 0.10,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.90,y + offsety + 0.70,z + offsetz + 0.90,uv.minU,uv.minV);
 		t.vertexUV(x + offsetx + 0.90,y - 0.20,z + offsetz + 0.90,uv.minU,uv.maxV);
 		
 		t.vertexUV(x + offsetx + 0.10,y - 0.20,z + offsetz + 0.10,uv.minU,uv.maxV);
 		t.vertexUV(x + offsetx + 0.90,y - 0.20,z + offsetz + 0.90,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.90,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.10,uv.minU,uv.minV);
+		t.vertexUV(x + offsetx + 0.90,y + offsety + 0.70,z + offsetz + 0.90,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.10,y + offsety + 0.70,z + offsetz + 0.10,uv.minU,uv.minV);
 		
 		t.vertexUV(x + offsetx + 0.10,y - 0.20,z + offsetz + 0.90,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.90,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.10,uv.minU,uv.minV);
+		t.vertexUV(x + offsetx + 0.10,y + offsety + 0.70,z + offsetz + 0.90,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.90,y + offsety + 0.70,z + offsetz + 0.10,uv.minU,uv.minV);
 		t.vertexUV(x + offsetx + 0.90,y - 0.20,z + offsetz + 0.10,uv.minU,uv.maxV);
 		
 		t.vertexUV(x + offsetx + 0.10,y - 0.20,z + offsetz + 0.90,uv.minU,uv.maxV);
 		t.vertexUV(x + offsetx + 0.90,y - 0.20,z + offsetz + 0.10,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.10,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.90,uv.minU,uv.minV);
+		t.vertexUV(x + offsetx + 0.90,y + offsety + 0.70,z + offsetz + 0.10,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.10,y + offsety + 0.70,z + offsetz + 0.90,uv.minU,uv.minV);
 	}
 	else{
 		return _TessellateInWorld(tess,block,pos,aux,b);
@@ -115,12 +121,6 @@ static void InitCreativeItems(){
 	Item::addCreativeItem(201,0);
 	Item::addCreativeItem(201,1);
 	Item::addCreativeItem(201,2);
-	Item::addCreativeItem(201,3);
-	Item::addCreativeItem(201,4);
-	Item::addCreativeItem(201,5);
-	Item::addCreativeItem(201,6);
-	Item::addCreativeItem(201,7);
-	Item::addCreativeItem(201,8);
 }
 
 /*static void (*_NormalTick)(Entity*entity);
