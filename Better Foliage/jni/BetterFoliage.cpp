@@ -45,7 +45,35 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 		}*/
 		srand(x^y^z);
 		unsigned char raux = rand()%3;
-	    tess -> tessellateCrossInWorld(*Block::mBlocks[201],BlockPos(x,y + 1,z),raux,true);
+		float const  offsetx = fmod((((float)rand())/((float)RAND_MAX)),0.2)*((rand()%2)?1:-1);
+		float const  offsety = fmod((((float)rand())/((float)RAND_MAX)),0.1)*((rand()%2)?1:-1);
+		float const  offsetz = fmod((((float)rand())/((float)RAND_MAX)),0.2)*((rand()%2)?1:-1);
+		//block.setVisualShape({0,0,0,1+offsetx,0.8,1+offsetz});
+		//return _TessellateInWorld(tess,block,{x + offsetx,y,z + offsetz},aux,b);
+		//return _tessellateInWorld(tess,block,pos,aux,b);
+		Tessellator& t = tess -> getTessellator();
+		t.init();
+		//t.color(tess -> _getBlockColor(pos,block,aux));
+		TextureUVCoordinateSet const& uv = tess -> _getTexture(*Block::mBlocks[201],0,raux);
+		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.10,uv.maxU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.10,y + offsety + 1.70,z + offsetz + 0.10,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.90,y + offsety + 1.70,z + offsetz + 0.90,uv.minU,uv.minV);
+		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.90,uv.minU,uv.maxV);
+		
+		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.10,uv.minU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.90,uv.maxU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.90,y + offsety + 1.70,z + offsetz + 0.90,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.10,y + offsety + 1.70,z + offsetz + 0.10,uv.minU,uv.minV);
+		
+		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.90,uv.maxU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.10,y + offsety + 1.70,z + offsetz + 0.90,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.90,y + offsety + 1.70,z + offsetz + 0.10,uv.minU,uv.minV);
+		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.10,uv.minU,uv.maxV);
+		
+		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.90,uv.minU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.10,uv.maxU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.90,y + offsety + 1.70,z + offsetz + 0.10,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.10,y + offsety + 1.70,z + offsetz + 0.90,uv.minU,uv.minV);
 		return _TessellateInWorld(tess,block,pos,aux,b);
 	}
 	else if(block.blockId == 201){
@@ -58,7 +86,7 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 		//return _tessellateInWorld(tess,block,pos,aux,b);
 		Tessellator& t = tess -> getTessellator();
 		t.init();
-		t.color(tess -> _getBlockColor(pos,block,aux));
+		//t.color(tess -> _getBlockColor(pos,block,aux));
 		TextureUVCoordinateSet const& uv = tess -> _getTexture(block,0,aux);
 		t.vertexUV(x + offsetx + 0.10,y - 0.20,z + offsetz + 0.10,uv.maxU,uv.maxV);
 		t.vertexUV(x + offsetx + 0.10,y + offsety + 0.70,z + offsetz + 0.10,uv.maxU,uv.minV);
