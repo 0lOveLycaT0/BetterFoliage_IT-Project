@@ -26,8 +26,10 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 	Block* blockk = const_cast<Block*>(&block);
 	int x = pos.x, y = pos.y, z = pos.z;
 	
-	int TR = Block::mGlass -> renderLayer1;
+	int TR = Block::mTallgrass -> renderLayer1;
 	Block::mBlocks[2] -> renderLayer1 = TR;
+	
+	Block::mBlocks[2] -> setSolid(false);
 	
 	/*switch(block.blockId){
 		case 2:
@@ -50,30 +52,30 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 		float const  offsetz = fmod((((float)rand())/((float)RAND_MAX)),0.2)*((rand()%2)?1:-1);
 		//block.setVisualShape({0,0,0,1+offsetx,0.8,1+offsetz});
 		//return _TessellateInWorld(tess,block,{x + offsetx,y,z + offsetz},aux,b);
-		//return _tessellateInWorld(tess,block,pos,aux,b);
+		//return _TessellateInWorld(tess,block,pos,aux,b);
 		Tessellator& t = tess -> getTessellator();
 		t.init();
-		//t.color(tess -> _getBlockColor(pos,block,aux));
+		t.color(tess -> _getBlockColor({x, y, z},block,aux));
 		TextureUVCoordinateSet const& uv = tess -> _getTexture(*Block::mBlocks[201],0,raux);
-		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.10,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.10,y + offsety + 1.70,z + offsetz + 0.10,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.90,y + offsety + 1.70,z + offsetz + 0.90,uv.minU,uv.minV);
-		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.90,uv.minU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.05,y + 0.80,z + offsetz + 0.05,uv.maxU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.05,y + offsety + 1.90,z + offsetz + 0.05,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.95,y + offsety + 1.90,z + offsetz + 0.95,uv.minU,uv.minV);
+		t.vertexUV(x + offsetx + 0.95,y + 0.80,z + offsetz + 0.95,uv.minU,uv.maxV);
 		
-		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.10,uv.minU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.90,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.90,y + offsety + 1.70,z + offsetz + 0.90,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.10,y + offsety + 1.70,z + offsetz + 0.10,uv.minU,uv.minV);
+		t.vertexUV(x + offsetx + 0.05,y + 0.80,z + offsetz + 0.05,uv.minU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.95,y + 0.80,z + offsetz + 0.95,uv.maxU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.95,y + offsety + 1.90,z + offsetz + 0.95,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.05,y + offsety + 1.90,z + offsetz + 0.05,uv.minU,uv.minV);
 		
-		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.90,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.10,y + offsety + 1.70,z + offsetz + 0.90,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.90,y + offsety + 1.70,z + offsetz + 0.10,uv.minU,uv.minV);
-		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.10,uv.minU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.05,y + 0.80,z + offsetz + 0.95,uv.maxU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.05,y + offsety + 1.90,z + offsetz + 0.95,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.95,y + offsety + 1.90,z + offsetz + 0.05,uv.minU,uv.minV);
+		t.vertexUV(x + offsetx + 0.95,y + 0.80,z + offsetz + 0.05,uv.minU,uv.maxV);
 		
-		t.vertexUV(x + offsetx + 0.10,y + 0.80,z + offsetz + 0.90,uv.minU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.90,y + 0.80,z + offsetz + 0.10,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.90,y + offsety + 1.70,z + offsetz + 0.10,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.10,y + offsety + 1.70,z + offsetz + 0.90,uv.minU,uv.minV);
+		t.vertexUV(x + offsetx + 0.05,y + 0.80,z + offsetz + 0.95,uv.minU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.95,y + 0.80,z + offsetz + 0.05,uv.maxU,uv.maxV);
+		t.vertexUV(x + offsetx + 0.95,y + offsety + 1.90,z + offsetz + 0.05,uv.maxU,uv.minV);
+		t.vertexUV(x + offsetx + 0.05,y + offsety + 1.90,z + offsetz + 0.95,uv.minU,uv.minV);
 		return _TessellateInWorld(tess,block,pos,aux,b);
 	}
 	else if(block.blockId == 201){
@@ -86,7 +88,7 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 		//return _tessellateInWorld(tess,block,pos,aux,b);
 		Tessellator& t = tess -> getTessellator();
 		t.init();
-		//t.color(tess -> _getBlockColor(pos,block,aux));
+		t.color(tess -> _getBlockColor(pos,block,aux));
 		TextureUVCoordinateSet const& uv = tess -> _getTexture(block,0,aux);
 		t.vertexUV(x + offsetx + 0.10,y - 0.20,z + offsetz + 0.10,uv.maxU,uv.maxV);
 		t.vertexUV(x + offsetx + 0.10,y + offsety + 0.70,z + offsetz + 0.10,uv.maxU,uv.minV);
