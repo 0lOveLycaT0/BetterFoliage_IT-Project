@@ -41,8 +41,9 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 		if(tess -> getRegion().getBlock(x,y+1,z) == Block::mAir){
 			Tessellator& t = tess -> getTessellator();
 	        t.init();
-		    //t.color(tess -> _getBlockColor({x, y, z},block,aux));
+		    t.color(tess -> _getBlockColor({x, y, z},block,aux));
 		    TextureUVCoordinateSet const& uv = tess -> _getTexture(*Block::mBlocks[230],0,raux);
+			TextureUVCoordinateSet const& uv1 = tess -> _getTexture(*Block::mBlocks[2],0,raux);
 		
 		    t.vertexUV(x + offsetx + 0.00,y + 0.80,z + offsetz + 0.00,uv.maxU,uv.maxV);
 		    t.vertexUV(x + offsetx + 0.00,y + offsety + 1.90,z + offsetz + 0.00,uv.maxU,uv.minV);
@@ -64,7 +65,7 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 	    	t.vertexUV(x + offsetx + 1.00,y + offsety + 1.90,z + offsetz + 0.00,uv.maxU,uv.minV);
 		    t.vertexUV(x + offsetx + 0.00,y + offsety + 1.90,z + offsetz + 1.00,uv.minU,uv.minV);
 		}
-		return _TessellateInWorld(tess,block,pos,aux,b);
+	    return _TessellateInWorld(tess,block,pos,aux,b);
 	}
 	else{
 		return _TessellateInWorld(tess,block,pos,aux,b);
