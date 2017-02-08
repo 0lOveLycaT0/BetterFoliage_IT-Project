@@ -42,9 +42,6 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 	}*/
 	
 	if(block.blockId == 2){
-		/*if(tess -> getRegion().getBlock(x,y+1,z) == Block::mAir){
-			tess -> getRegion().setBlock(x,y+1,z,201,0);
-		}*/
 		srand(x^y^z);
 		unsigned char raux = rand()%3;
 		float const  offsetx = fmod((((float)rand())/((float)RAND_MAX)),0.2)*((rand()%2)?1:-1);
@@ -53,29 +50,32 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 		//block.setVisualShape({0,0,0,1+offsetx,0.8,1+offsetz});
 		//return _TessellateInWorld(tess,block,{x + offsetx,y,z + offsetz},aux,b);
 		//return _TessellateInWorld(tess,block,pos,aux,b);
-		Tessellator& t = tess -> getTessellator();
-		t.init();
-		t.color(tess -> _getBlockColor({x, y, z},block,aux));
-		TextureUVCoordinateSet const& uv = tess -> _getTexture(*Block::mBlocks[201],0,raux);
-		t.vertexUV(x + offsetx + 0.05,y + 0.80,z + offsetz + 0.05,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.05,y + offsety + 1.90,z + offsetz + 0.05,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.95,y + offsety + 1.90,z + offsetz + 0.95,uv.minU,uv.minV);
-		t.vertexUV(x + offsetx + 0.95,y + 0.80,z + offsetz + 0.95,uv.minU,uv.maxV);
+		if(tess -> getRegion().getBlock(x,y+1,z) == Block::mAir){
+			Tessellator& t = tess -> getTessellator();
+	        t.init();
+		    t.color(tess -> _getBlockColor({x, y, z},block,aux));
+		    TextureUVCoordinateSet const& uv = tess -> _getTexture(*Block::mBlocks[201],0,raux);
 		
-		t.vertexUV(x + offsetx + 0.05,y + 0.80,z + offsetz + 0.05,uv.minU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.95,y + 0.80,z + offsetz + 0.95,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.95,y + offsety + 1.90,z + offsetz + 0.95,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.05,y + offsety + 1.90,z + offsetz + 0.05,uv.minU,uv.minV);
+		    t.vertexUV(x + offsetx + 0.00,y + 0.80,z + offsetz + 0.00,uv.maxU,uv.maxV);
+		    t.vertexUV(x + offsetx + 0.00,y + offsety + 1.90,z + offsetz + 0.00,uv.maxU,uv.minV);
+		    t.vertexUV(x + offsetx + 1.00,y + offsety + 1.90,z + offsetz + 1.00,uv.minU,uv.minV);
+		    t.vertexUV(x + offsetx + 1.00,y + 0.80,z + offsetz + 1.00,uv.minU,uv.maxV);
 		
-		t.vertexUV(x + offsetx + 0.05,y + 0.80,z + offsetz + 0.95,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.05,y + offsety + 1.90,z + offsetz + 0.95,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.95,y + offsety + 1.90,z + offsetz + 0.05,uv.minU,uv.minV);
-		t.vertexUV(x + offsetx + 0.95,y + 0.80,z + offsetz + 0.05,uv.minU,uv.maxV);
+		    t.vertexUV(x + offsetx + 0.00,y + 0.80,z + offsetz + 0.00,uv.minU,uv.maxV);
+		    t.vertexUV(x + offsetx + 1.00,y + 0.80,z + offsetz + 1.00,uv.maxU,uv.maxV);
+		    t.vertexUV(x + offsetx + 1.00,y + offsety + 1.90,z + offsetz + 1.00,uv.maxU,uv.minV);
+	        t.vertexUV(x + offsetx + 0.00,y + offsety + 1.90,z + offsetz + 0.00,uv.minU,uv.minV);
 		
-		t.vertexUV(x + offsetx + 0.05,y + 0.80,z + offsetz + 0.95,uv.minU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.95,y + 0.80,z + offsetz + 0.05,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.95,y + offsety + 1.90,z + offsetz + 0.05,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.05,y + offsety + 1.90,z + offsetz + 0.95,uv.minU,uv.minV);
+		    t.vertexUV(x + offsetx + 0.00,y + 0.80,z + offsetz + 1.00,uv.maxU,uv.maxV);
+		    t.vertexUV(x + offsetx + 0.00,y + offsety + 1.90,z + offsetz + 1.00,uv.maxU,uv.minV);
+		    t.vertexUV(x + offsetx + 1.00,y + offsety + 1.90,z + offsetz + 0.00,uv.minU,uv.minV);
+		    t.vertexUV(x + offsetx + 1.00,y + 0.80,z + offsetz + 0.00,uv.minU,uv.maxV);
+		
+		    t.vertexUV(x + offsetx + 0.00,y + 0.80,z + offsetz + 1.00,uv.minU,uv.maxV);
+	        t.vertexUV(x + offsetx + 1.00,y + 0.80,z + offsetz + 0.00,uv.maxU,uv.maxV);
+	    	t.vertexUV(x + offsetx + 1.00,y + offsety + 1.90,z + offsetz + 0.00,uv.maxU,uv.minV);
+		    t.vertexUV(x + offsetx + 0.00,y + offsety + 1.90,z + offsetz + 1.00,uv.minU,uv.minV);
+		}
 		return _TessellateInWorld(tess,block,pos,aux,b);
 	}
 	else if(block.blockId == 201){
