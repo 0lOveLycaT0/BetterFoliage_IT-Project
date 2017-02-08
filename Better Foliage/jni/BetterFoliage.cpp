@@ -31,30 +31,18 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 	
 	Block::mBlocks[2] -> setSolid(false);
 	
-	/*switch(block.blockId){
-		case 2:
-			return tess -> grassblockRenderer(blockk,pos,aux,bs);
-		break;
-			
-		default:
-		    return _TessellateInWorld(tess,block,pos,aux,b);
-		break;
-	}*/
-	
 	if(block.blockId == 2){
 		srand(x^y^z);
 		unsigned char raux = rand()%3;
 		float const  offsetx = fmod((((float)rand())/((float)RAND_MAX)),0.2)*((rand()%2)?1:-1);
 		float const  offsety = fmod((((float)rand())/((float)RAND_MAX)),0.1)*((rand()%2)?1:-1);
 		float const  offsetz = fmod((((float)rand())/((float)RAND_MAX)),0.2)*((rand()%2)?1:-1);
-		//block.setVisualShape({0,0,0,1+offsetx,0.8,1+offsetz});
-		//return _TessellateInWorld(tess,block,{x + offsetx,y,z + offsetz},aux,b);
-		//return _TessellateInWorld(tess,block,pos,aux,b);
+        
 		if(tess -> getRegion().getBlock(x,y+1,z) == Block::mAir){
 			Tessellator& t = tess -> getTessellator();
 	        t.init();
-		    t.color(tess -> _getBlockColor({x, y, z},block,aux));
-		    TextureUVCoordinateSet const& uv = tess -> _getTexture(*Block::mBlocks[201],0,raux);
+		    //t.color(tess -> _getBlockColor({x, y, z},block,aux));
+		    TextureUVCoordinateSet const& uv = tess -> _getTexture(*Block::mBlocks[230],0,raux);
 		
 		    t.vertexUV(x + offsetx + 0.00,y + 0.80,z + offsetz + 0.00,uv.maxU,uv.maxV);
 		    t.vertexUV(x + offsetx + 0.00,y + offsety + 1.90,z + offsetz + 0.00,uv.maxU,uv.minV);
@@ -78,38 +66,6 @@ static bool TessellateInWorld(BlockTessellator *tess,Block &block,BlockPos const
 		}
 		return _TessellateInWorld(tess,block,pos,aux,b);
 	}
-	else if(block.blockId == 201){
-        srand(x^y^z);
-		float const  offsetx = fmod((((float)rand())/((float)RAND_MAX)),0.2)*((rand()%2)?1:-1);
-		float const  offsety = fmod((((float)rand())/((float)RAND_MAX)),0.1)*((rand()%2)?1:-1);
-		float const  offsetz = fmod((((float)rand())/((float)RAND_MAX)),0.2)*((rand()%2)?1:-1);
-		//block.setVisualShape({0,0,0,1+offsetx,0.8,1+offsetz});
-		//return _TessellateInWorld(tess,block,{x + offsetx,y,z + offsetz},aux,b);
-		//return _tessellateInWorld(tess,block,pos,aux,b);
-		Tessellator& t = tess -> getTessellator();
-		t.init();
-		t.color(tess -> _getBlockColor(pos,block,aux));
-		TextureUVCoordinateSet const& uv = tess -> _getTexture(block,0,aux);
-		t.vertexUV(x + offsetx + 0.10,y - 0.20,z + offsetz + 0.10,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.10,y + offsety + 0.70,z + offsetz + 0.10,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.90,y + offsety + 0.70,z + offsetz + 0.90,uv.minU,uv.minV);
-		t.vertexUV(x + offsetx + 0.90,y - 0.20,z + offsetz + 0.90,uv.minU,uv.maxV);
-		
-		t.vertexUV(x + offsetx + 0.10,y - 0.20,z + offsetz + 0.10,uv.minU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.90,y - 0.20,z + offsetz + 0.90,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.90,y + offsety + 0.70,z + offsetz + 0.90,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.10,y + offsety + 0.70,z + offsetz + 0.10,uv.minU,uv.minV);
-		
-		t.vertexUV(x + offsetx + 0.10,y - 0.20,z + offsetz + 0.90,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.10,y + offsety + 0.70,z + offsetz + 0.90,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.90,y + offsety + 0.70,z + offsetz + 0.10,uv.minU,uv.minV);
-		t.vertexUV(x + offsetx + 0.90,y - 0.20,z + offsetz + 0.10,uv.minU,uv.maxV);
-		
-		t.vertexUV(x + offsetx + 0.10,y - 0.20,z + offsetz + 0.90,uv.minU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.90,y - 0.20,z + offsetz + 0.10,uv.maxU,uv.maxV);
-		t.vertexUV(x + offsetx + 0.90,y + offsety + 0.70,z + offsetz + 0.10,uv.maxU,uv.minV);
-		t.vertexUV(x + offsetx + 0.10,y + offsety + 0.70,z + offsetz + 0.90,uv.minU,uv.minV);
-	}
 	else{
 		return _TessellateInWorld(tess,block,pos,aux,b);
 	}
@@ -120,8 +76,7 @@ static void InitClientData(){
 	_InitClientData();
 	
 	//BetterGrass
-	Item::mItems[201] = new AuxDataBlockItem("better_grass",201-256,Block::mBlocks[201]);
-	Item::mItems[201]->setCategory(CreativeItemCategory::DECORATIONS);
+	Item::mItems[230] = new AuxDataBlockItem("better_grass",230-256,Block::mBlocks[230]);
 }
 
 static void (*_BG_InitBlocks)();
@@ -129,10 +84,10 @@ static void BG_InitBlocks(){
 	_BG_InitBlocks();
 	
 	//BetterGrass
-    BlockGraphics::mBlocks[201]=new BlockGraphics("portal");
-	BlockGraphics::mBlocks[201]->setTextureItem("better_grass");
-	BlockGraphics::mBlocks[201]->setBlockShape(BlockShape::CROSS);
-	BlockGraphics::mBlocks[201]->setSoundType(BlockSoundType::GRASS);
+    BlockGraphics::mBlocks[230]=new BlockGraphics("portal");
+	BlockGraphics::mBlocks[230]->setTextureItem("better_grass");
+	BlockGraphics::mBlocks[230]->setBlockShape(BlockShape::CROSS);
+	BlockGraphics::mBlocks[230]->setSoundType(BlockSoundType::GRASS);
 }
 
 static void (*_Bl_InitBlocks)();
@@ -140,7 +95,7 @@ static void Bl_InitBlocks(){
 	_Bl_InitBlocks();
 	
 	//BetterGrass
-    Block::mBlocks[201]=new BetterGrass("better_grass",201);
+    Block::mBlocks[230]=new BetterGrass("better_grass",230);
 }
 
 static void (*_InitCreativeItems)();
@@ -148,9 +103,9 @@ static void InitCreativeItems(){
 	_InitCreativeItems();
 	
 	//BetterGrass
-	Item::addCreativeItem(201,0);
-	Item::addCreativeItem(201,1);
-	Item::addCreativeItem(201,2);
+	//Item::addCreativeItem(230,0);
+	//Item::addCreativeItem(230,1);
+	//Item::addCreativeItem(230,2);
 }
 
 /*static void (*_NormalTick)(Entity*entity);

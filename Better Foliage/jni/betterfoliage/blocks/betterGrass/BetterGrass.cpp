@@ -4,7 +4,7 @@
 
 BetterGrass::BetterGrass(std::string const &name,int id) : Block(name,id,Material::getMaterial(MaterialType::DEVICE)){
 	init();
-	setCategory(CreativeItemCategory::DECORATIONS);
+	//setCategory(CreativeItemCategory::DECORATIONS);
 	setTicking(true);
 	setSolid(false);
 	renderLayer = mTallgrass -> renderLayer;
